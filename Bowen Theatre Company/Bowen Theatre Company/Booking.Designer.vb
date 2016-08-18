@@ -23,6 +23,7 @@ Partial Class frmSeatAllocations
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSeatAllocations))
         Me.pnlSeatNumbers = New System.Windows.Forms.TableLayoutPanel()
         Me.lblSelectSeat = New System.Windows.Forms.Label()
         Me.cmbTicketType = New System.Windows.Forms.ComboBox()
@@ -35,6 +36,9 @@ Partial Class frmSeatAllocations
         Me.lblSurname = New System.Windows.Forms.Label()
         Me.tipShowTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.btnClear = New System.Windows.Forms.Button()
+        Me.lblSeatNotAvailable = New System.Windows.Forms.Label()
+        Me.picCompanyLogo = New System.Windows.Forms.PictureBox()
+        CType(Me.picCompanyLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlSeatNumbers
@@ -144,12 +148,36 @@ Partial Class frmSeatAllocations
         Me.btnClear.Text = "Clear"
         Me.btnClear.UseVisualStyleBackColor = True
         '
+        'lblSeatNotAvailable
+        '
+        Me.lblSeatNotAvailable.AutoSize = True
+        Me.lblSeatNotAvailable.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSeatNotAvailable.ForeColor = System.Drawing.Color.Red
+        Me.lblSeatNotAvailable.Location = New System.Drawing.Point(24, 411)
+        Me.lblSeatNotAvailable.Name = "lblSeatNotAvailable"
+        Me.lblSeatNotAvailable.Size = New System.Drawing.Size(375, 16)
+        Me.lblSeatNotAvailable.TabIndex = 31
+        Me.lblSeatNotAvailable.Text = "The seat you have selected is not available. Please select another seat"
+        Me.lblSeatNotAvailable.Visible = False
+        '
+        'picCompanyLogo
+        '
+        Me.picCompanyLogo.BackgroundImage = Global.Bowen_Theatre_Company.My.Resources.Resources.icon
+        Me.picCompanyLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.picCompanyLogo.Location = New System.Drawing.Point(13, 13)
+        Me.picCompanyLogo.Name = "picCompanyLogo"
+        Me.picCompanyLogo.Size = New System.Drawing.Size(120, 120)
+        Me.picCompanyLogo.TabIndex = 32
+        Me.picCompanyLogo.TabStop = False
+        '
         'frmSeatAllocations
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(424, 419)
+        Me.ClientSize = New System.Drawing.Size(424, 436)
+        Me.Controls.Add(Me.picCompanyLogo)
+        Me.Controls.Add(Me.lblSeatNotAvailable)
         Me.Controls.Add(Me.btnClear)
         Me.Controls.Add(Me.cmbTicketType)
         Me.Controls.Add(Me.txtFirstName)
@@ -161,8 +189,13 @@ Partial Class frmSeatAllocations
         Me.Controls.Add(Me.lblSurname)
         Me.Controls.Add(Me.lblSelectSeat)
         Me.Controls.Add(Me.pnlSeatNumbers)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(440, 475)
+        Me.MinimumSize = New System.Drawing.Size(440, 475)
         Me.Name = "frmSeatAllocations"
-        Me.Text = "Booking"
+        Me.Text = "Select Seat"
+        CType(Me.picCompanyLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -180,4 +213,6 @@ Partial Class frmSeatAllocations
     Friend WithEvents lblSurname As Label
     Friend WithEvents tipShowTip As ToolTip
     Friend WithEvents btnClear As Button
+    Private WithEvents lblSeatNotAvailable As Label
+    Friend WithEvents picCompanyLogo As PictureBox
 End Class

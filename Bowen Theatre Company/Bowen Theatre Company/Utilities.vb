@@ -1,6 +1,6 @@
 ﻿Public Module Utilities
     Public btnSeatAllocation As Control
-    Public seatButtons(3, 5) As String
+    Public seatButtons() As TicketInfo
     Public senderArrayValue As String
 
 
@@ -8,6 +8,8 @@
         Dim firstName, surname As String
         Dim dateOfBirth As Date
         Dim type As String
+        Dim status As Boolean
+        Dim ticketBookingDetails As String
     End Structure
 
     Public Function saveTicketInfo(ticket As TicketInfo) As String

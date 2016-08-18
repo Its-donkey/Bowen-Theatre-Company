@@ -22,21 +22,23 @@ Partial Class frmShowDetails
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmShowDetails))
         Me.txtTicketDetails = New System.Windows.Forms.TextBox()
         Me.btnOk = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'txtTicketDetails
         '
+        Me.txtTicketDetails.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTicketDetails.Location = New System.Drawing.Point(13, 13)
         Me.txtTicketDetails.Multiline = True
         Me.txtTicketDetails.Name = "txtTicketDetails"
-        Me.txtTicketDetails.Size = New System.Drawing.Size(259, 135)
+        Me.txtTicketDetails.Size = New System.Drawing.Size(259, 120)
         Me.txtTicketDetails.TabIndex = 0
         '
         'btnOk
         '
-        Me.btnOk.Location = New System.Drawing.Point(105, 154)
+        Me.btnOk.Location = New System.Drawing.Point(105, 139)
         Me.btnOk.Name = "btnOk"
         Me.btnOk.Size = New System.Drawing.Size(75, 23)
         Me.btnOk.TabIndex = 1
@@ -47,9 +49,10 @@ Partial Class frmShowDetails
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(284, 183)
+        Me.ClientSize = New System.Drawing.Size(284, 175)
         Me.Controls.Add(Me.btnOk)
         Me.Controls.Add(Me.txtTicketDetails)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmShowDetails"
         Me.Text = "Ticket Details"
         Me.ResumeLayout(False)

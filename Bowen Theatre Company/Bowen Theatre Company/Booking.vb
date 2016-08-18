@@ -1,5 +1,6 @@
 ﻿Option Strict Off
 Imports System.Text.RegularExpressions
+Imports System.Threading
 
 Public Class frmSeatAllocations
 
@@ -11,7 +12,8 @@ Public Class frmSeatAllocations
 
         dtpDateOfBirth.MaxDate = Today 'Stop people being born in the future
 
-        Dim font As New System.Drawing.Font("Arial", 10)
+        Dim font As New System.Drawing.Font("Arial", 10, FontStyle.Bold)
+        Dim i As Integer = 0
 
         For rowNumber As Integer = 0 To pnlSeatNumbers.RowCount - 1
             For columnNumber As Integer = 0 To pnlSeatNumbers.ColumnCount - 1
@@ -21,10 +23,11 @@ Public Class frmSeatAllocations
 
                 With btnSeatAllocation
                     .Size = New Size(100%, 100%)
-                    .Tag = rowNumber & "," & columnNumber
+                    .Tag = i
                     .Name = buttonName
                     .Text = buttonName
-                    .ForeColor = Color.Green
+                    .ForeColor = Color.Black
+                    .BackColor = Color.LightGreen
                     .Font = font
                     .BackgroundImage = My.Resources.chair
                     .BackgroundImageLayout = ImageLayout.Stretch
@@ -34,69 +37,79 @@ Public Class frmSeatAllocations
                 AddHandler btnSeatAllocation.MouseHover, AddressOf btnSeatAllocation_MouseHover
 
                 pnlSeatNumbers.Controls.Add(btnSeatAllocation, columnNumber, rowNumber)
-                seatButtons(rowNumber, columnNumber) = "Available"
 
+                ReDim Preserve seatButtons(i)
+                seatButtons(i).status = True
 
+                i += 1
             Next
         Next
     End Sub
 
     Private Sub btnSeatAllocation_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs)
-        Dim arrayNumbers() As String = Split(sender.tag, ",")
-        senderArrayValue = seatButtons(arrayNumbers(0), arrayNumbers(1))
+
         If e.Button = MouseButtons.Left Then
-
-
             If validateForm() Then
-                If senderArrayValue = "Available" Then
+                If seatButtons(sender.Tag).status = True Then
                     Dim ticket As TicketInfo
 
                     With ticket
                         .firstName = txtFirstName.Text
                         .surname = txtSurname.Text
                         .dateOfBirth = dtpDateOfBirth.Value
-                        .type = cmbTicketType.SelectedItem
+                        .type = CType(cmbTicketType.SelectedItem, String)
                     End With
 
-                    seatButtons(arrayNumbers(0), arrayNumbers(1)) = saveTicketInfo(ticket)
-                    With sender
-                        .forecolor = Color.Black
-                        .Backcolor = Color.MistyRose
+                    seatButtons(sender.Tag).ticketBookingDetails = saveTicketInfo(ticket)
+                    seatButtons(sender.Tag).status = False
 
+                    With sender
+                        .Forecolor = Color.White
+                        .Backcolor = Color.Red
+                        .Text += vbCrLf & "N/A" & vbCrLf & "" & vbCrLf & ""
+                        .Font = New System.Drawing.Font("Arial", 8, FontStyle.Bold)
                     End With
 
                     clearForm(sender, e)
-
+                    lblSeatNotAvailable.Visible = False
                 Else
-                    MsgBox("Unfortunately the seat you have selected is not available." & vbCrLf & "Please select another seat")
-
+                    displaySeatTaken(5)
                 End If
             End If
+
         ElseIf e.Button = MouseButtons.Right Then
+            'If the button is right clicked Fill in the field on frmShowDetails to reflect the booking details
+            'If booked will show all the details else will show Available
+            If seatButtons(sender.Tag).status = True Then
+                frmShowDetails.txtTicketDetails.Text = "Available"
+            ElseIf seatButtons(sender.Tag).status = False Then
+                frmShowDetails.txtTicketDetails.Text = seatButtons(sender.Tag).ticketBookingDetails
+            End If
+            frmShowDetails.txtTicketDetails.ReadOnly = True
+
             frmShowDetails.ShowDialog()
         End If
     End Sub
 
     Private Sub btnSeatAllocation_MouseHover(ByVal sender As Object, ByVal e As EventArgs)
         Dim arrayNumbers() As String = Split(sender.tag, ",")
-        Dim tooltip As String = seatButtons(arrayNumbers(0), arrayNumbers(1))
-        If tooltip <> "Available" Then
+        Dim tooltip As String = seatButtons(sender.Tag).ticketBookingDetails
+        If seatButtons(sender.Tag).status = False Then
             tipShowTip.SetToolTip(sender, tooltip)
             tipShowTip.ToolTipTitle = "Booking Information"
         Else
+            tipShowTip.SetToolTip(sender, "Available")
             tipShowTip.ToolTipTitle = ""
-            tipShowTip.SetToolTip(sender, tooltip)
         End If
     End Sub
 
-    Private Sub dtpDateOfBirth_ValueChanged(sender As Object, e As EventArgs)
-        'Check if the right ticket type is selected
-        'A child ticket must be less than 14 years old
-        If DateDiff(DateInterval.Day, Now, dtpDateOfBirth.Value) < -5114 Then
-            cmbTicketType.Items.Remove("Child")
+    Private Sub dtpDateOfBirth_ValueChanged(sender As Object, e As EventArgs) Handles dtpDateOfBirth.ValueChanged
+        'A child must be under 14.
+        If DateDiff(DateInterval.Day, Now, dtpDateOfBirth.Value) < -5114 Then 'If the patron is over 14 years
+            cmbTicketType.Items.Remove("Child") 'Remove child ticket type
 
         ElseIf cmbTicketType.Items.Contains("Child") Then
-
+            'Do nothing if patron is under 14 and the item already exists
         Else
             cmbTicketType.Items.Add("Child")
         End If
@@ -140,5 +153,13 @@ Public Class frmSeatAllocations
         txtSurname.Clear()
         dtpDateOfBirth.Value = Today
         cmbTicketType.SelectedIndex = -1
+        lblSeatNotAvailable.Visible = False
+    End Sub
+
+
+    Private Async Sub displaySeatTaken(ByVal seconds As Integer)
+        lblSeatNotAvailable.Visible = True
+        Await Task.Delay(seconds * 1000)
+        lblSeatNotAvailable.Visible = False
     End Sub
 End Class
