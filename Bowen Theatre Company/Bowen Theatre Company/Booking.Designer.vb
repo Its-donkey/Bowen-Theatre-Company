@@ -38,6 +38,7 @@ Partial Class frmSeatAllocations
         Me.btnClear = New System.Windows.Forms.Button()
         Me.lblSeatNotAvailable = New System.Windows.Forms.Label()
         Me.picCompanyLogo = New System.Windows.Forms.PictureBox()
+        Me.btnDeleteData = New System.Windows.Forms.Button()
         CType(Me.picCompanyLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -124,6 +125,7 @@ Partial Class frmSeatAllocations
         '
         'dtpDateOfBirth
         '
+        Me.dtpDateOfBirth.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpDateOfBirth.Location = New System.Drawing.Point(212, 64)
         Me.dtpDateOfBirth.Name = "dtpDateOfBirth"
         Me.dtpDateOfBirth.Size = New System.Drawing.Size(200, 20)
@@ -170,12 +172,22 @@ Partial Class frmSeatAllocations
         Me.picCompanyLogo.TabIndex = 32
         Me.picCompanyLogo.TabStop = False
         '
+        'btnDeleteData
+        '
+        Me.btnDeleteData.Location = New System.Drawing.Point(212, 118)
+        Me.btnDeleteData.Name = "btnDeleteData"
+        Me.btnDeleteData.Size = New System.Drawing.Size(75, 23)
+        Me.btnDeleteData.TabIndex = 33
+        Me.btnDeleteData.Text = "Clear Seats"
+        Me.btnDeleteData.UseVisualStyleBackColor = True
+        '
         'frmSeatAllocations
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.ClientSize = New System.Drawing.Size(424, 436)
+        Me.Controls.Add(Me.btnDeleteData)
         Me.Controls.Add(Me.picCompanyLogo)
         Me.Controls.Add(Me.lblSeatNotAvailable)
         Me.Controls.Add(Me.btnClear)
@@ -215,4 +227,5 @@ Partial Class frmSeatAllocations
     Friend WithEvents btnClear As Button
     Private WithEvents lblSeatNotAvailable As Label
     Friend WithEvents picCompanyLogo As PictureBox
+    Friend WithEvents btnDeleteData As Button
 End Class
